@@ -1,11 +1,11 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 import MainPage from './Pages/MainPage/MainPage'
-import Temple from "./Components/Temple/temple"
+import Temple from "./components/Temple/temple"
 // import Dieties from "./Components/Dieties/dieties"
-import Festivals from "./Components/Festivals/festivals"
-import Dashboard from './Components/Dashboard/dashboard'
-import Login from "./Components/Login/Login"
+import Festivals from "./components/Festivals/festivals"
+import Dashboard from './components/Dashboard/dashboard'
+import Login from "./components/Login/Login"
 import ProtectedRoute from "./components/ProtectedRoute"
 import { AuthProvider } from "./context/AuthContext"
 
