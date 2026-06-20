@@ -8,6 +8,8 @@ import Dashboard from './components/Dashboard/dashboard'
 import Login from "./components/Login/Login"
 import ProtectedRoute from "./components/ProtectedRoute"
 import { AuthProvider } from "./context/AuthContext"
+import BulkImport from "./components/BulkImport/BulkImport";
+
 
 function App() {
   return (
@@ -26,6 +28,7 @@ function App() {
             <Route path="temple" element={<Temple />} />
             {/* <Route path="dieties" element={<Dieties />} /> */}
             <Route path="festivals" element={<Festivals />} />
+            <Route path="bulk-import" element={<BulkImport />} />
           </Route>
         </Routes>
       </BrowserRouter>

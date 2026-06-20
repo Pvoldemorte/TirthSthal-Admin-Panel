@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./dashboard.css";
 import { getTemples, updateTemple, deleteTemple } from "../../services/api";
+import EditTempleModal from "./EditTempleModal";
 
 const mapTemple = (t) => ({
   id: t._id,
@@ -119,18 +120,20 @@ const Dashboard = () => {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [viewTarget, setViewTarget] = useState(null);
   const [toast, setToast] = useState(null);
+  const [rawTemples, setRawTemples] = useState([]);
 
   const fetchTemples = async () => {
-    setLoading(true);
-    try {
-      const res = await getTemples("?limit=100");
-      setTemples((res.temples || []).map(mapTemple));
-    } catch (err) {
-      showToast(err.message || "Failed to load temples", "error");
-    } finally {
-      setLoading(false);
-    }
-  };
+  setLoading(true);
+  try {
+    const res = await getTemples("?limit=100");
+    setRawTemples(res.temples || []);
+    setTemples((res.temples || []).map(mapTemple));
+  } catch (err) {
+    showToast(err.message || "Failed to load temples", "error");
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     fetchTemples();
@@ -141,36 +144,26 @@ const Dashboard = () => {
     setTimeout(() => setToast(null), 3000);
   };
 
-  const handleSave = async (updated) => {
-    try {
-      await updateTemple(updated.id, {
-        name: updated.name,
-        deity: updated.deity,
-        city: updated.city,
-        district: updated.district,
-        state: updated.state,
-        website: updated.website,
-        timings: { morning: updated.openTime, evening: updated.closeTime },
-        isActive: updated.status === "published",
-      });
-      setTemples((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
-      setEditTarget(null);
-      showToast("Temple updated successfully!");
-    } catch (err) {
-      showToast(err.message || "Failed to update temple", "error");
-    }
-  };
+const handleSave = async (id, payload) => {
+  try {
+    await updateTemple(id, payload);
+    showToast("Temple updated successfully!");
+    fetchTemples();
+  } catch (err) {
+    showToast(err.message || "Failed to update temple", "error");
+    throw err;
+  }
+};
 
-  const handleDelete = async (id) => {
-    try {
-      await deleteTemple(id);
-      setTemples((prev) => prev.filter((t) => t.id !== id));
-      setDeleteTarget(null);
-      showToast("Temple deleted.", "error");
-    } catch (err) {
-      showToast(err.message || "Failed to delete temple", "error");
-    }
-  };
+const handleDelete = async (id) => {
+  try {
+    await deleteTemple(id);
+    setTemples((prev) => prev.filter((t) => t.id !== id));
+    showToast("Temple deleted.");
+  } catch (err) {
+    showToast(err.message || "Failed to delete temple", "error");
+  }
+};
 
   const filtered = temples.filter((t) => {
     const matchSearch =
@@ -269,8 +262,9 @@ const Dashboard = () => {
                   <td>
                     <div className="action-btns">
                       <button className="act-btn view" title="View" onClick={() => setViewTarget(t)}>👁</button>
-                      <button className="act-btn edit" title="Edit" onClick={() => setEditTarget(t)}>✏️</button>
-                      <button className="act-btn del" title="Delete" onClick={() => setDeleteTarget(t)}>🗑️</button>
+                      <button className="act-btn edit" title="Edit"
+  onClick={() => setEditTarget(rawTemples.find((rt) => rt._id === t.id))}>✏️</button>
+                      <button className="act-btn del" title="Delete" onClick={() => handleDelete(t.id)}>🗑️</button>
                     </div>
                   </td>
                 </tr>
@@ -289,9 +283,13 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {editTarget && <EditModal temple={editTarget} onSave={handleSave} onClose={() => setEditTarget(null)} />}
-      {deleteTarget && <DeleteConfirm temple={deleteTarget} onConfirm={handleDelete} onClose={() => setDeleteTarget(null)} />}
-      {viewTarget && <DetailDrawer temple={viewTarget} onClose={() => setViewTarget(null)} />}
+      {editTarget && (
+  <EditTempleModal
+    temple={editTarget}
+    onSave={handleSave}
+    onClose={() => setEditTarget(null)}
+  />
+)}
     </div>
   );
 };

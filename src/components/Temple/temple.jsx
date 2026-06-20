@@ -71,7 +71,6 @@ const Temple = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Permanently delete this temple?")) return;
     try {
       await deleteTemple(id);
       setTemples((prev) => prev.filter((t) => t._id !== id));
@@ -102,8 +101,8 @@ const Temple = () => {
         state:       form.state,
         address:     form.address,
         coordinates: {
-          lat: parseFloat(form.coordinates.latitude)  || undefined,
-          lng: parseFloat(form.coordinates.longitude) || undefined,
+          latitude: parseFloat(form.coordinates.latitude)  || undefined,
+          longitude: parseFloat(form.coordinates.longitude) || undefined,
         },
         website:  form.website,
         timings:  { morning: form.openTime, evening: form.closeTime },

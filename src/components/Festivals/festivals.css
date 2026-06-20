@@ -272,7 +272,7 @@ input[type="date"] {
 .form-status.error   { background: #fee2e2; color: #b91c1c; }
 
 
-* Image Preview Grid */
+ /* Image Preview Grid  */
 .image-preview-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));

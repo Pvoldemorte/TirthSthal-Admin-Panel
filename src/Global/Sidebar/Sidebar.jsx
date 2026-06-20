@@ -70,6 +70,10 @@ const Sidebar = ({isOpen , setIsOpen}) => {
             <span>Temple</span></Link>
 
           </li>
+          <li><Link to="/bulk-import" className="link">
+  <span>📦</span>
+  <span>Bulk Import</span>
+</Link></li>
 
           {/* <li><Link to="/dieties" className="link">
 
