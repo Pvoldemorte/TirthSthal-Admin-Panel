@@ -61,6 +61,16 @@ export const updateFestival = (id, payload) =>
 export const deleteFestival = (id) =>
   request(`/festivals/${id}`, { method: "DELETE" });
 
+// ── Blogs ──
+export const getBlogs = (query = "") => request(`/blogs${query}`);
+export const getBlog = (slug) => request(`/blogs/${slug}`);
+export const createBlog = (payload) =>
+  request("/blogs", { method: "POST", body: payload });
+export const updateBlog = (id, payload) =>
+  request(`/blogs/${id}`, { method: "PUT", body: payload });
+export const deleteBlog = (id) =>
+  request(`/blogs/${id}`, { method: "DELETE" });
+
 // ── Deities ──
 // export const getDeities    = ()        => request("/deities");
 // export const createDeity   = (payload) => request("/deities",     { method: "POST",   body: payload });

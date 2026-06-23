@@ -90,6 +90,11 @@ const Sidebar = ({isOpen , setIsOpen}) => {
 
           </li>
 
+           <li><Link to="/blog" className="link">
+  <span>📦</span>
+  <span>Blog</span>
+</Link></li>
+
            </ul>
 
       </nav>
